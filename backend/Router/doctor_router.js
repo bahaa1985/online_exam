@@ -1,6 +1,6 @@
 import express from 'express';
-import { getDoctors, updateDoctor, newDoctor} from '../controller/doctor_controller.js';
-import { urlencoded } from 'body-parser';
+import { getDoctors, updateDoctor, newDoctor} from '../Controller/doctor_controller.js';
+import  urlencoded  from 'body-parser';
 
 const doctor_router=express.Router();
 

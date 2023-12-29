@@ -1,5 +1,5 @@
 import poolPromise from "./sql_connect_api.js";
-import Sql, { NVarChar } from 'mssql';
+import Sql from 'mssql';
 
 export async function getDoctors(){
     const pool=await poolPromise;
