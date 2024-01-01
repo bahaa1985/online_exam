@@ -1,5 +1,5 @@
 import Sql from 'mssql'
-import poolPromise from "./sql_connect_api.js";
+import poolPromise from "sql_connect_api.js";
 
 export async function getQuestions(course_id){
     const pool=await poolPromise;
@@ -8,12 +8,13 @@ export async function getQuestions(course_id){
     return questions;
 }
 
-export async function createQuestion(questiontype_id,question_title,course_id,doctor_id,question_option,option_status){
+export async function createQuestion(questiontype_id,question_title,course_id,doctor_id,
+    options_arr){
     const pool=await poolPromise;
     const transaction=new Sql.Transaction(pool);
     const request_question = new Sql.Request(transaction);
     const request_option= new Sql.Request(transaction);
-    
+    let new_question_id =0
     await transaction.begin()
     .then(()=>{
         
@@ -25,27 +26,32 @@ export async function createQuestion(questiontype_id,question_title,course_id,do
         request_question.execute('CREATE_NEW_QUESTION')  //inserting new question:
         .then((result)=>{
             if(result.rowsAffected.length>0){
-                console.log('returned value:',result.recordsets[0][0].new_question_id)
-                const new_question_id=result.recordsets[0][0].new_question_id;
-                if(new_question_id>0){//Question options paramaters:
-                    
-                    request_option.input('question_id',Sql.Int,new_question_id);
-                    request_option.input('question_option',Sql.NVarChar,question_option);
-                    request_option.input('option_status',Sql.Bit,option_status);
-                    request_option.execute('CREATE_QUESTION_OPTIONS') //inserting the options:
-                    .then((result)=>{
-                        transaction.commit();
-                        console.log('New question and its options is created!')
-                        return result;
-                    })
-                    .catch((err)=>{
-                        transaction.rollback();
-                        console.log(err);
-                        return err;
-                    })
-                    
-                }                
+                // console.log('returned value:',result.recordsets[0][0].new_question_id)
+                new_question_id=result.recordsets[0][0].new_question_id;               
             }
+        })
+        .then(()=>{
+            if(new_question_id>0){
+                //Question options paramaters:
+                for(let i=0;i<options_arr.length;i++){
+                    request_option.parameters.clear();
+                    request_option.input('question_id',Sql.Int,new_question_id);
+                    request_option.input('question_option',Sql.NVarChar,options_arr[i].option_text);
+                    request_option.input('option_status',Sql.Bit,options_arr[i].option_status);
+                    request_option.execute('CREATE_QUESTION_OPTIONS'); //inserting the options:
+                }
+
+                transaction.commit() //commit inserting the question and options:
+                .then((result)=>{
+                    console.log('New question and its options is created!')
+                    return result;
+                })
+                .catch((err)=>{
+                    transaction.rollback();
+                    console.log(err);
+                    return err;
+                })
+            } 
         })
         .catch((err)=>{
             transaction.rollback();
@@ -53,10 +59,6 @@ export async function createQuestion(questiontype_id,question_title,course_id,do
             return err;
         })
     })
-    // .finally(()=>{
-    //     if (pool) pool.close();
-    // })
-    
 }
 
 export async function updateQuestion(question_id,questiontype_id,question_title,course_id,doctor_id){
