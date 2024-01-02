@@ -11,15 +11,15 @@ export  function Course(){
            setCourses(result);
         });
     },[]);
-    console.log(courses)
+    console.log('courses: ',courses)
     return(
         <div>
             {
                 courses.map((course,index)=>{
                     return(
                         <div key={index}>
-                        <p>{course.course_name}</p>
-                        <p>{course.course_code}</p>
+                        <p>{course[index].course_name}</p>
+                        <p>{course[index].course_code}</p>
                         </div>
                     )
                 })
