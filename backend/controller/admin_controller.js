@@ -1,4 +1,4 @@
-import poolPromise from "sql_connect_api.js";
+import poolPromise from "./sql_connect_api.js"
 
 export async function getAdmins(){
     const pool=await poolPromise;

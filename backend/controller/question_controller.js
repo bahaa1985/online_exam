@@ -1,5 +1,5 @@
 import Sql from 'mssql'
-import poolPromise from "sql_connect_api.js";
+import poolPromise from "./sql_connect_api.js";
 
 export async function getQuestions(course_id){
     const pool=await poolPromise;
