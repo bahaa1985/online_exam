@@ -1,5 +1,5 @@
 import express from 'express';
-import { getDoctors, updateDoctor, newDoctor} from '../Controller/doctor_controller.js';
+import { getDoctors, updateDoctor, newDoctor} from '../controller/doctor_controller.js';
 import  urlencoded  from 'body-parser';
 
 const doctor_router=express.Router();
@@ -16,8 +16,8 @@ doctor_router.get('/',async (req,res)=>{
    const doctor_name=req.body.doctor_name;
    const doctor_email=req.body.doctor_email;
    const doctor_password=req.body.doctor_password;
-
-   newDoctor(doctor_name,doctor_email,doctor_password).then((result)=>{
+   const courses_array=req.body.courses_array
+   newDoctor(doctor_name,doctor_email,doctor_password,courses_array).then((result)=>{
       res.status(200).json(result);
    })
    .catch((err)=>res.status(500).json(err));

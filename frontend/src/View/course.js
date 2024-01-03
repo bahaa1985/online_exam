@@ -18,8 +18,8 @@ export  function Course(){
                 courses.map((course,index)=>{
                     return(
                         <div key={index}>
-                        <p>{course[index].course_name}</p>
-                        <p>{course[index].course_code}</p>
+                        <p>{course.course_name}</p>
+                        <p>{course.course_code}</p>
                         </div>
                     )
                 })

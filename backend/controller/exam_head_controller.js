@@ -4,13 +4,13 @@ import poolPromise from "./sql_connect_api.js";
 const pool=await poolPromise;
 export async function getExams( ){    
     const result= await pool.request.query('SELECT * FROM Exam');
-    const exams= result.recordsets;
+    const exams= result.recordset;
     return exams;
 }
 
 export async function getExam(exam_id){
     const result=await pool.request.query(`SELECT * FROM Exam WHERE id=${exam_id}`);
-    const exam=result.recordsets;
+    const exam=result.recordset;
     return exam;
 }
 

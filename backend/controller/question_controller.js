@@ -4,7 +4,7 @@ import poolPromise from "./sql_connect_api.js";
 export async function getQuestions(course_id){
     const pool=await poolPromise;
     const result=await pool.request_question().query(`SELECT * FROM Question WHERE course_id=${course_id}`)
-    const questions=result.recordsets;
+    const questions=result.recordset;
     return questions;
 }
 
@@ -27,7 +27,7 @@ export async function createQuestion(questiontype_id,question_title,course_id,do
         .then((result)=>{
             if(result.rowsAffected.length>0){
                 // console.log('returned value:',result.recordsets[0][0].new_question_id)
-                new_question_id=result.recordsets[0][0].new_question_id;               
+                new_question_id=result.recordset[0][0].new_question_id;               
             }
         })
         .then(()=>{
