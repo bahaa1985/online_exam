@@ -54,3 +54,9 @@ export async function updateDoctor(doctor_id,doctor_name,doctor_email,doctor_pas
     const result= request.execute('UPDATE_DOCTOR');
     return result;
 }
+
+export async function deleteDoctorCourse(doctor_course_id){
+    const pool=await poolPromise; 
+    const deleted_course= await pool.request().query(`DELETE FROM CourseDoctor WHERE id=${doctor_course_id}`);
+    return deleteDoctorCourse;
+}
