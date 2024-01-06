@@ -6,8 +6,13 @@ const course_router=express.Router();
 
 course_router.get('/:doctor_id',async (req,res)=>{
    const doctor_id=req.params.doctor_id
-   getCourses(doctor_id).then((result)=>{
-      res.status(200).send(result);
+   getCourses(doctor_id).then(result=>{
+      if(result){
+         res.status(201).json(result);
+      }
+      else{
+         res.status(400).send('Error 400: bad request!');
+      }
    })
    .catch((err)=>{
       res.status(400).json(err);
