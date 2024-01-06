@@ -21,13 +21,16 @@ admin_router.get('/',async (req,res)=>{
    newAdmin(admin_name,email,password).then((result)=>{
       if(result){
          res.status(201).json(result);
-      }
+     }
+     else{
+         res.status(400).send('Error 400: bad request!');
+     }
    })
    .catch((err)=>{
       res.status(500).send(err);
    })
 })
-.patch('/',urlencoded,(req,res)=>{
+.put('/',urlencoded,(req,res)=>{
    const admin_id=req.body.admin_id;
    const admin_name=req.body.admin_name;
    const email=req.body.email;
@@ -36,7 +39,10 @@ admin_router.get('/',async (req,res)=>{
    updatedAdmin(admin_id,admin_name,email,password).then((result)=>{
       if(result){
          res.status(201).json(result);
-      }      
+     }
+     else{
+         res.status(400).send('Error 400: bad request!');
+     }     
    })
    .catch((err)=>{
       res.status(500).send(err);
