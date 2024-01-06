@@ -12,6 +12,7 @@ export  function Course(){
         });
     },[]);
     console.log('courses: ',courses)
+    
     return(
         <div>
             {

@@ -1,5 +1,5 @@
 import express from 'express';
-import { getDoctors, updateDoctor, newDoctor, deleteDoctorCourse} from '../controller/doctor_controller.js';
+import { getDoctors, updateDoctor, newDoctor, deleteDoctorCourse} from '../Controller/doctor_controller.js';
 import  urlencoded  from 'body-parser';
 
 const doctor_router=express.Router();
