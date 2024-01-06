@@ -35,7 +35,7 @@ question_router
     });
 
 })
-.patch('/:question_id',urlEncoded,(req,res)=>{
+.put('/:question_id',urlEncoded,(req,res)=>{
     const question_id=req.params.question_id;
     const questiontype_id=req.body.questiontype_id;
     const question_title=req.body.question_title;

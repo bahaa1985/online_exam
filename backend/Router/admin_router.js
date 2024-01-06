@@ -27,7 +27,7 @@ admin_router.get('/',async (req,res)=>{
       res.status(500).send(err);
    })
 })
-.patch('/',urlencoded,(req,res)=>{
+.put('/',urlencoded,(req,res)=>{
    const admin_id=req.body.admin_id;
    const admin_name=req.body.admin_name;
    const email=req.body.email;

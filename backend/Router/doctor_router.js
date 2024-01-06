@@ -1,5 +1,5 @@
 import express from 'express';
-import { getDoctors, updateDoctor, newDoctor, deleteDoctorCourse} from '../controller/doctor_controller.js';
+import { getDoctors, updateDoctor, newDoctor, deleteDoctorCourse} from '../Controller/doctor_controller.js';
 import  urlencoded  from 'body-parser';
 
 const doctor_router=express.Router();
@@ -22,7 +22,7 @@ doctor_router.get('/',async (req,res)=>{
    })
    .catch((err)=>res.status(500).json(err));
 })
-.patch('/:doctor_id',urlencoded,(req,res)=>{
+.put('/:doctor_id',urlencoded,(req,res)=>{
    const doctor_id=req.params.doctor_id;
    const doctor_name=req.body.doctor_name;
    const doctor_email=req.body.doctor_email;

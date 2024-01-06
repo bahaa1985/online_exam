@@ -1,0 +1,50 @@
+import  express  from "express";
+import { getExam,getExams,createExam,updateExam,deleteExam } from "../Controller/exam_head_controller";
+import { urlencoded } from "body-parser";
+
+const exam_router=express.Router()
+
+exam_router
+.get('/:academic_year',(req,res)=>{
+    const academic_year=req.params.academic_year;
+    getExams(academic_year).then(result=>{
+        if(result){
+            res.status(201).json(result);
+        }
+    })
+    .catch(err=> res.status(500).json(err));
+})
+.get('/:exam_id',(req,res)=>{
+    const exam_id=req.params.exam_id;
+    getExam(exam_id).then(result=>{
+        if(result){
+            res.status(201).json(result);
+        }
+    })
+    .catch(err=> res.status(500).json(err));
+})
+.post('/',urlencoded,(req,res)=>{
+    const admin_id=req.body.admin_id;
+    const course_id=req.body.course_id;
+    const exam_date=req.body.exam_date;
+    const start_time=req.body.start_time;
+    const end_time=req.body.end_time;
+
+    createExam(admin_id,course_id,exam_date,start_time,end_time).then(result=>{
+        if(result){
+            res.status(201).json(result);
+        }
+    }).catch(err=> res.status(500).json(err));
+})
+.put('/:exam_id',urlencoded,(req,res)=>{
+    const exam_id=req.params.exam_id;
+    const course_id=req.body.course_id;
+    const exam_date=req.body.exam_date;
+    const start_time=req.body.start_time;
+    const end_time=req.body.end_date;
+
+    updateExam(exam_id,course_id,exam_date,start_time,end_time).then(result=>{
+        res.status(201).json(result);
+    })
+    .catch(err=> res.status(500).json(err));
+})

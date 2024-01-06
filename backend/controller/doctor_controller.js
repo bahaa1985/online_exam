@@ -19,14 +19,15 @@ export async function newDoctor(doctor_name,doctor_email,doctor_password,courses
         request.input('doctor_password',Sql.NVarChar,doctor_password);
         const new_doctor_id=0;
         request.execute('CREATE_NEW_DOCTOR')
-        .then((result)=>{
+        .then((result)=>{ //insert doctor's courses after successfully inserting the new doctor
             if(result.rowsAffected>0){
                 new_doctor_id=result.recordset[0][0].new_doctor_id;
                 for(let i=0;i<courses_array.length;i++){
                     request.parameters.clear();
                     request.input('doctor_id',Sql.Int,new_doctor_id);
                     request.input('course_id',Sql.Int,courses_array[i].course_id);
-                    request.input('academic_year',Sql.NChar,courses_array[i].academic_year);                    
+                    request.input('academic_year',Sql.NChar,courses_array[i].academic_year); 
+                    request.execute('')                   
                 }
                 transaction.commit();               
                 return result;              
