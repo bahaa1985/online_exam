@@ -2,11 +2,12 @@ import express from "express";
 import bodyParser from "body-parser";
 import "dotenv/config";
 
-import sql_connect from "./controller/sql_connect_api.js";
+import sql_connect from "./Controller/sql_connect_api.js";
 import admin_router from "./Router/admin_router.js";
 import doctor_router from "./Router/doctor_router.js";
 import course_router from "./Router/course_router.js";
 import question_router from "./Router/question_router.js";
+import terms_router from "./Router/terms_router.js"
 
 const urlEncoded=bodyParser.urlencoded({extended:false});
 
@@ -32,6 +33,7 @@ app.use('/admins',admin_router);
 app.use('/doctors',doctor_router);
 app.use('/courses',course_router);
 app.use('/questions',question_router);
+app.use('/terms',terms_router);
 
 //Listening server
 app.listen(8000,()=>{

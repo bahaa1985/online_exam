@@ -5,8 +5,9 @@ import { urlencoded } from "body-parser";
 const exam_router=express.Router()
 
 exam_router
-.get('/:academic_year',(req,res)=>{
+.get('/:academic_year/:term_id',(req,res)=>{
     const academic_year=req.params.academic_year;
+    const term_id=req.params.term_id;
     getExams(academic_year).then(result=>{
         if(result){
             res.status(201).json(result);
@@ -35,8 +36,10 @@ exam_router
     const exam_date=req.body.exam_date;
     const start_time=req.body.start_time;
     const end_time=req.body.end_time;
-
-    createExam(admin_id,course_id,exam_date,start_time,end_time)
+    const question_count=req.body.question_count;
+    const exam_points=req.body.exam_points;
+    
+    createExam(admin_id,course_id,exam_date,start_time,end_time,question_count,exam_points)
     .then(result=>{
         if(result){
             res.status(201).json(result);
