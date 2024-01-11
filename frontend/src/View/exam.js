@@ -7,7 +7,7 @@ export  function Exam(){
 
     const [exams,setExams]=useState([]);
     const [terms,setTerms]=useState([]);
-    let year=new Date().getFullYear();
+    const [year,setYear]=useState(new Date().getFullYear());
 
     useEffect(()=>{
         getExams().then(result=>{
@@ -26,9 +26,9 @@ export  function Exam(){
       </Dropdown.Toggle>
 
       <Dropdown.Menu>
-        <Dropdown.Item href="#/action-1" onSelect={()=>year=2022}>2022</Dropdown.Item>
-        <Dropdown.Item href="#/action-2"  onSelect={()=>year=2023}>2023</Dropdown.Item>
-        <Dropdown.Item href="#/action-3"  onSelect={()=>year=2024}>2024</Dropdown.Item>
+        <Dropdown.Item href="#/action-1" onSelect={()=>setYear(2022)}>2022</Dropdown.Item>
+        <Dropdown.Item href="#/action-2"  onSelect={()=>setYear(2023)}>2023</Dropdown.Item>
+        <Dropdown.Item href="#/action-3"  onSelect={()=>setYear(2024)}>2024</Dropdown.Item>
       </Dropdown.Menu>
     </Dropdown>
 

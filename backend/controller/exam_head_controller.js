@@ -3,19 +3,24 @@ import poolPromise from './sql_connect_api.js';
 
 const pool=await poolPromise;
 
-export async function getExams(academic_year,term_id){    
-    const result= await pool.request.query(`SELECT * FROM Exam WHERE YEAR(exam_date)=${academic_year} AND term_id=${term_id}`);
-    const exams= result.recordset;
+// export async function getExams(academic_year,term_id){    
+//     const result= await pool.request.query(`SELECT * FROM Exam WHERE YEAR(exam_date)=${academic_year} AND term_id=${term_id}`);
+//     const exams= result.recordset;
+//     return exams;
+// }
+
+export async function getExams(department_id,exam_year,term_id){
+    const pool=await poolPromise;
+    const request= await pool.request();
+    request.input('department_id',Sql.Int,department_id);
+    request.input('exam_year',Sql.Int,exam_year);
+    request.input('term_id',Sql.Int,term_id);
+    const result= await request.execute('SELECT_EXAM');
+    const exams=result.recordset;
     return exams;
 }
 
-export async function getExam(exam_id){
-    const result=await pool.request.query(`SELECT * FROM Exam WHERE id=${exam_id}`);
-    const exam=result.recordset;
-    return exam;
-}
-
-export async function createExam(admin_id,course_id,exam_date,start_time,end_time,term_id,question_count,exam_points){
+export async function createExam(admin_id,course_id,exam_date,start_time,end_time,term_id,question_count,exam_points,department_id){
     const exam_request=new Sql.Request();
     exam_request.input('admin_id',Sql.Int,admin_id);
     exam_request.input('course_id',Sql.Int,course_id);
@@ -25,12 +30,14 @@ export async function createExam(admin_id,course_id,exam_date,start_time,end_tim
     exam_request.input('term_id',Sql.Int,term_id);
     exam_request.input('question_count',Sql.Int,question_count);
     exam_request.input('exam_points',Sql.Int,exam_points);
+    exam_request.input('department_id',Sql.Int,department_id);
     exam_request.execute('CREATE_NEW_EXAM');
 }
 
-export async function updateExam(exam_id,course_id,exam_date,start_time,end_time,term_id,question_count,exam_points){
+export async function updateExam(exam_id,department_id,course_id,exam_date,start_time,end_time,term_id,question_count,exam_points){
     const exam_request=new Sql.Request();
     exam_request.input('exam_id',Sql.Int,exam_id);
+    exam_request.input('department_id',Sql.Int,department_id);
     exam_request.input('course_id',Sql.Int,course_id);
     exam_request.input('exam_date',Sql.Date,exam_date);
     exam_request.input('start_time',Sql.Time,start_time);
