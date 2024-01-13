@@ -1,4 +1,4 @@
-import poolPromise from "./sql_connect_api";
+import poolPromise from "./sql_connect_api.js";
 
 export async function getTerms(){
     const pool=await poolPromise;

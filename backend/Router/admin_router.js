@@ -1,5 +1,5 @@
 import express from 'express';
-import { getAdmins,newAdmin, updatedAdmin } from '../Controller/user_controller.js';
+import { getAdmins } from '../Controller/user_controller.js';
 import  urlencoded  from 'body-parser';
 
 const admin_router=express.Router();
