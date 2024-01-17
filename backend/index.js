@@ -8,6 +8,9 @@ import doctor_router from "./Router/doctor_router.js";
 import course_router from "./Router/course_router.js";
 import question_router from "./Router/question_router.js";
 import terms_router from "./Router/terms_router.js"
+import department_router from "./Router/department_router.js";
+import registration_router from "./Router/registration_router.js"
+import user_type_router from "./Router/user_type_router.js";
 
 const urlEncoded=bodyParser.urlencoded({extended:false});
 
@@ -29,12 +32,13 @@ app.get('/',(req,res)=>{
 })
 
 //Routing:
-app.use('/admins',admin_router);
-app.use('/doctors',doctor_router);
+
 app.use('/courses',course_router);
 app.use('/questions',question_router);
 app.use('/terms',terms_router);
-
+app.use('/departments',department_router);
+app.use('/register',registration_router);
+app.use('/user_type',user_type_router)
 //Listening server
 app.listen(8000,()=>{
     console.log("Hello")

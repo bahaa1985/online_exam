@@ -55,7 +55,7 @@ export  function Exam(){
       </Dropdown.Toggle> 
     {exams.filter((exam)=>exam.academic_year===year).map((exam,index)=>{
                 return(
-        <Dropdown.Item href="#/action-1">{exam.}</Dropdown.Item>
+        <Dropdown.Item href="#/action-1"></Dropdown.Item>
                 )
             })
         }

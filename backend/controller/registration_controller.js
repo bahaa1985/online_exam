@@ -1,5 +1,5 @@
-import poolPromise from "./sql_connect_api";
-import { newUser } from "./user_controller";
+import poolPromise from "./sql_connect_api.js";
+import { newUser } from "./user_controller.js";
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import 'dotenv/config';

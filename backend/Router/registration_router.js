@@ -1,11 +1,12 @@
 import express from "express";
-import { urlencoded } from "body-parser";
-import { registerUser } from "../Controller/registration_controller";
-import { newUser } from "../Controller/user_controller";
+import bodyParser from "body-parser";
+import { registerUser } from "../Controller/registration_controller.js";
+import { newUser } from "../Controller/user_controller.js";
 
+const urlEncoded=bodyParser.urlencoded({extended:false});
 const register_router=express.Router();
 
-register_router.post('/register',urlencoded,(req,res)=>{
+export default register_router.post('/register',urlEncoded,(req,res)=>{
 
     const user_name=req.body.user_name;
     const user_email=req.body.user_email;
