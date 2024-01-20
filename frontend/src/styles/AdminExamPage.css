@@ -1,0 +1,23 @@
+.admin-exam-page {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+  }
+  
+  form {
+    max-width: 400px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  label {
+    margin: 10px 0;
+  }
+  
+  input,
+  select {
+    margin: 5px 0;
+  }
+  

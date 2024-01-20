@@ -1,3 +1,6 @@
 .error-feedback{
     color:red;
 }
+.form-label{
+    width:25% !important; 
+}

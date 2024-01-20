@@ -1,20 +1,20 @@
 import express from "express";
 import bodyParser from "body-parser";
 import { registerUser } from "../Controller/registration_controller.js";
-import { newUser } from "../Controller/user_controller.js";
+
 
 const urlEncoded=bodyParser.urlencoded({extended:false});
 const register_router=express.Router();
 
-export default register_router.post('/register',urlEncoded,(req,res)=>{
+register_router.post('/',urlEncoded,  (req,res)=>{
 
     const user_name=req.body.user_name;
     const user_email=req.body.user_email;
     const user_password=req.body.user_password;
     const user_type=req.body.user_type;
-    const department=req.body.department;
+    const user_department=req.body.user_department;
 
-    registerUser(user_name,user_email,user_password,user_type,department).then(result=>{
+    registerUser(user_name,user_email,user_password,user_type,user_department).then((result)=>{
         if(result){ 
             res.status(201).json(result);
         }
@@ -23,6 +23,8 @@ export default register_router.post('/register',urlEncoded,(req,res)=>{
         }
     })
     .catch(err=>{
-        res.status(500).json(err);
+        res.status(500).json(err.message);
     })
  })
+
+ export default register_router;

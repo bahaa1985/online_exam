@@ -1,0 +1,38 @@
+.exam-results {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+  }
+  
+  .filters {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+  
+  .filters label {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .filters input {
+    margin-top: 5px;
+  }
+  
+  .exam {
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 15px;
+    margin-bottom: 20px;
+    width: 80%;
+  }
+  
+  .detailed-scores {
+    margin-top: 10px;
+  }
+  
+  button {
+    margin-top: 10px;
+  }
+   

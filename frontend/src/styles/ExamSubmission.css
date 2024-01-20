@@ -1,0 +1,40 @@
+.exam-submission {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+  }
+  
+  .timer {
+    margin-bottom: 10px;
+  }
+  
+  .questions {
+    width: 100%;
+  }
+  
+  .question {
+    margin-bottom: 20px;
+  }
+  
+  textarea {
+    width: 100%;
+    height: 100px;
+    resize: vertical;
+    margin-top: 5px;
+  }
+  
+  .buttons {
+    margin-top: 20px;
+    display: flex;
+    gap: 10px;
+  }
+  
+  .correct-answers {
+    margin-top: 20px;
+  }
+  
+  .correct-answers p {
+    margin-bottom: 5px;
+  }
+  

@@ -9,8 +9,9 @@ import course_router from "./Router/course_router.js";
 import question_router from "./Router/question_router.js";
 import terms_router from "./Router/terms_router.js"
 import department_router from "./Router/department_router.js";
-import registration_router from "./Router/registration_router.js"
+import register_router from "./Router/registration_router.js";
 import user_type_router from "./Router/user_type_router.js";
+import login_router from "./Router/login_router.js";
 
 const urlEncoded=bodyParser.urlencoded({extended:false});
 
@@ -37,7 +38,8 @@ app.use('/courses',course_router);
 app.use('/questions',question_router);
 app.use('/terms',terms_router);
 app.use('/departments',department_router);
-app.use('/register',registration_router);
+app.use('/register',register_router);
+app.use('/login',login_router);
 app.use('/user_type',user_type_router)
 //Listening server
 app.listen(8000,()=>{

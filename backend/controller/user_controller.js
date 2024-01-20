@@ -1,5 +1,5 @@
 import poolPromise from "./sql_connect_api.js"
-
+import Sql from 'mssql';
 
 export async function getAdmins(){
     const pool=await poolPromise;
@@ -15,26 +15,27 @@ export async function getDoctors(){
     return doctors;
 }
 
-export async function newUser(user_name, user_email,user_password,user_type,department_id=null){
+export async function newUser(user_name, user_email,user_password,user_type,user_department){
     const pool=await poolPromise;
     const request= await pool.request();
     request.input('user_name',Sql.NVarChar,user_name);
     request.input('user_email',Sql.NVarChar,user_email);
     request.input('user_password',Sql.NVarChar,user_password);
-    request.input('user_type',Sql.NVarChar,user_type);
-    request.input('department_id',Sql.Int,null);    
+    request.input('user_type',Sql.Int,user_type);
+    request.input('user_department',Sql.Int,user_department);  
     const new_user= await request.execute("CREATE_NEW_USER");
-    return new_user.recordset;
+    return new_user;
 }
 
-export async function updateUser(user_id,user_name, user_email,user_password,user_type,department_id=null){
+export async function updateUser(user_id,user_name, user_email,user_password,user_type,user_department){
     const pool=await poolPromise;
     const request= await pool.request();
     request.input('id',Sql.Int,user_id);
     request.input('user_name',Sql.NVarChar,user_name);
     request.input('user_email',Sql.NVarChar,user_email);
     request.input('user_password',Sql.NVarChar,user_password);
-    request.input('user_type',Sql.NVarChar,user_type);
+    request.input('user_type',Sql.Int,user_type);
+    request.input('user_department',Sql.Int,user_department)
     if(user_type===1){
         request.input('department_id',Sql.NVarChar,null);
     }
