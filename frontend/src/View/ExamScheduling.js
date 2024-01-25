@@ -1,127 +1,187 @@
-import React, { useState } from 'react';
-import '../styles/ExamScheduling.css';
+import React from 'react';
+import "bootstrap/dist/css/bootstrap.min.css"
+import "bootstrap/dist/js/bootstrap.bundle"
+// import '../styles/ExamScheduling.css';
+import { useState, useEffect } from 'react';
+import { getExams,createExam } from '../fetching/exam';
+import { getTerms } from '../fetching/terms';
+import { getDepartments } from '../fetching/department';
+import { getCoursesForExam } from '../fetching/course';
 
-function ExamScheduling() {
-  const [selectedStudents, setSelectedStudents] = useState([]);
-  const [selectedExam, setSelectedExam] = useState('');
-  const [examTime, setExamTime] = useState('');
-  const [examPlace, setExamPlace] = useState('');
-  const [examDuration, setExamDuration] = useState('');
-  const [examType, setExamType] = useState('');
-  const [examNotes, setExamNotes] = useState('');
 
-  const students = [
-    { id: 1, name: 'Student 1' },
-    { id: 2, name: 'Student 2' },
-    { id: 3, name: 'Student 3' },
-    // Add more students as needed
-  ];
 
-  const exams = ['Math Exam', 'Science Exam', 'English Exam', 'History Exam'];
+function ExamScheduling(props) {
 
-  const handleStudentChange = (e) => {
-    const studentId = parseInt(e.target.value);
-    setSelectedStudents((prevSelected) => {
-      if (prevSelected.includes(studentId)) {
-        return prevSelected.filter((id) => id !== studentId);
-      } else {
-        return [...prevSelected, studentId];
-      }
+    const admin=props.admin;
+    const admin_id=admin.user_id;
+    console.log("admin:",admin);
+
+    const [exams,setExams]=useState([]);
+    const [terms,setTerms]=useState([]);
+    const [termId,setTermId]=useState(1);
+    const [courses,setCourses]=useState([]);
+    const [courseDocotrId,setCourseDoctorId]=useState(1);
+    const [courseName,setCourseName]=useState('');
+    const [departments,setDepartments]=useState([]);
+    const [departmentId,setDepartmentId]=useState(2);
+    const [exam_year,setExamYear]=useState(new Date().getFullYear().toString());
+    const [examDate,setExamDate]=useState('');
+    const [examStart,setexamStart]=useState('');
+    const [examEnd,setexamEnd]=useState('');
+    const [timeError,setTimeError]=useState('');
+    const [questionsCount,setQuesCount]=useState(0);
+    const [points,setPoints]=useState(0);
+
+    useEffect(()=>{
+        getExams().then(result=>{
+           setExams(result);
+        });
+    },[]);
+
+    useEffect(()=>{
+      getTerms().then(result=>{
+        setTerms(result);
     });
-  };
+    },[]);
 
-  const handleExamChange = (e) => {
-    setSelectedExam(e.target.value);
-  };
+    useEffect(()=>{
+      getDepartments().then(result=>{
+        setDepartments(result.filter(dep=>dep.id>1));
+      })
+    },[]);
 
-  const handleExamTimeChange = (e) => {
-    setExamTime(e.target.value);
-  };
+    
+    useEffect(()=>{
+      //get the current academic year, if the current month is more than 9 ( for examble october 2023 ) 
+      //then the cnext year is  the academic 2024
+      const month=new Date().getMonth();
+      if(month>9){
+        setExamYear(new Date().getFullYear()+1)
+      }
+      else{
+        setExamYear(new Date().getFullYear())
+      }
+      getCoursesForExam(departmentId)
+      .then(result=>{
+        setCourses(result.data);
+      })
 
-  const handleExamPlaceChange = (e) => {
-    setExamPlace(e.target.value);
-  };
+    },[departmentId])
 
-  const handleExamDurationChange = (e) => {
-    setExamDuration(e.target.value);
-  };
+    useEffect(() => {
+      if(courses.length>0){
+        console.log("courses: ",courses)
+       const course=courses.find(elem=>elem.course_doctor_id===courseDocotrId);
+       if(course)setCourseName(course.course_name);
+      }
+    }, [courseDocotrId,courseName,courses]);
 
-  const handleExamTypeChange = (e) => {
-    setExamType(e.target.value);
-  };
-
-  const handleExamNotesChange = (e) => {
-    setExamNotes(e.target.value);
-  };
+  function validateExamTime(start_time,end_time){
+    
+    let start_hour=parseInt(examStart[0]+examStart[1]);
+    let end_hour=parseInt(examEnd[0]+examEnd[1]);
+    console.log(start_hour,end_hour);
+    if(start_hour < end_hour){
+      setTimeError();
+    }
+    else{
+      setTimeError('تأكد من وقت بداية و نهاية الامتحان!');
+    }
+  }
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    console.log("cd id",courseDocotrId)
     // Perform actions with the exam scheduling details
-    console.log('Exam scheduling details submitted:', {
-      selectedStudents,
-      selectedExam,
-      examTime,
-      examPlace,
-      examDuration,
-      examType,
-      examNotes,
-    });
-    // You can send this data to the server or perform other actions as needed.
+    createExam(departmentId,courseDocotrId,admin_id,examDate,examStart,examEnd,exam_year,termId,questionsCount,points)
+    .then(exam=>{
+      if(exam.result){
+        alert(`تم إنشاء إمتحان مادة ${courseName} بنجاح!`);
+      }
+      else{
+        alert(exam.message)
+      }
+    })
+    .catch(err=>{
+      alert(err.message);
+    })
   };
 
   return (
-    <div className="exam-scheduling">
-      <h1>Exam Scheduling</h1>
-      <form onSubmit={handleSubmit}>
-        <label>
-          Select Students:
-          <select multiple value={selectedStudents} onChange={handleStudentChange} required>
-            {students.map((student) => (
-              <option key={student.id} value={student.id}>
-                {student.name}
-              </option>
-            ))}
+    <div dir='rtl' className="container col-sm-8 text-center">
+      <form className='form' onSubmit={handleSubmit} action='/exams' method='POST'>
+        <div className='container d-flex pt-3 col-sm-8'>    {/*select the term*/}
+          <label className='form-label col-sm-3'>اختر الترم</label>
+          <select className='form-control col-sm-9' value={termId} onChange={(e)=>setTermId(parseInt(e.target.value))}>
+            {
+              terms.map((term,index)=>{
+                return(
+                  <option key={index} value={term.id}>{term.term_name}</option>
+                )
+              })
+            }
           </select>
-        </label>
-
-        <label>
-          Select Exam:
-          <select value={selectedExam} onChange={handleExamChange} required>
-            <option value="">Select</option>
-            {exams.map((exam) => (
-              <option key={exam} value={exam}>
-                {exam}
-              </option>
-            ))}
+        </div>
+       
+        <div className='container d-flex pt-3 col-sm-8'>    {/*select the term*/}
+          <label className='form-label col-sm-3'>اختر القسم</label>
+          <select className='form-control col-sm-9' value={departmentId} onChange={(e)=>setDepartmentId(parseInt(e.target.value))}>
+            {
+              departments.map((department,index)=>{
+                return(
+                  <option key={index} value={department.id}>{department.department_name}</option>
+                )
+              })
+            }
           </select>
-        </label>
+        </div>
 
-        <label>
-          Exam Time:
-          <input type="datetime-local" value={examTime} onChange={handleExamTimeChange} required />
-        </label>
+        <div className='container d-flex pt-3 col-sm-8'>    {/*select the term*/}
+          <label className='form-label col-sm-3'>اختر المادة</label>
+          <select className='form-control col-sm-9' value={courseDocotrId} onChange={(e)=>setCourseDoctorId(parseInt(e.target.value))}>
+            {
+              courses.length>0 ?
+              courses.map((course,index)=>{
+                return(
+                  <option key={index} value={course.course_doctor_id}>{course.course_name}</option>
+                )
+              }):null
+            }
+          </select>
+        </div>
+          
+        <div className='container d-flex pt-3 col-sm-8'> 
+            <label className='form-label col-sm-2'>تاريخ الامتحان</label>
+            <input className='form-control col-sm-6' type="date" onChange={(e)=>setExamDate(e.target.value)}
+             min={new Date().toISOString().split('T')[0]}/>
+        </div>
 
-        <label>
-          Exam Place:
-          <input type="text" value={examPlace} onChange={handleExamPlaceChange} required />
-        </label>
+        <div className='container d-flex pt-3 col-sm-8'>
+          <label className='form-label'>من الساعة</label>
+          <input className='form-control' type='time' value={examStart} onChange={(e)=>{setexamStart(e.target.value);validateExamTime(examStart,examEnd)}}/>
+          <label className='form-label'>إلى الساعة</label>
+          <input className='form-control' type='time' value={examEnd}  onChange={(e)=>{setexamEnd(e.target.value);validateExamTime(examStart,examEnd)}}/>
+        </div>  
+        {
+          timeError ? 
+          (<span>{timeError}</span>)
+          :null
+        }
 
-        <label>
-          Exam Duration (in minutes):
-          <input type="number" value={examDuration} onChange={handleExamDurationChange} required />
-        </label>
+        <div className='container d-flex pt-3 col-sm-8'> 
+            <label className='form-label col-sm-2'>عدد الأسئلة</label>
+            <input className='form-control col-sm-6' type="input" onChange={(e)=>setQuesCount(e.target.value)}/>
+        </div>
 
-        <label>
-          Exam Type:
-          <input type="text" value={examType} onChange={handleExamTypeChange} required />
-        </label>
+        <div className='container d-flex pt-3 col-sm-8'> 
+            <label className='form-label col-sm-2'>مجموع الدرجات</label>
+            <input className='form-control col-sm-6' type="input" onChange={(e)=>setPoints(e.target.value)}/>
+        </div>
 
-        <label>
-          Exam Notes:
-          <textarea value={examNotes} onChange={handleExamNotesChange} />
-        </label>
+        <div className='container d-flex justify-content-center pt-3 col-sm-8'>
+          <button className='btn btn-primary' type="submit">Schedule Exam</button>
+        </div>  
 
-        <button type="submit">Schedule Exam</button>
       </form>
     </div>
   );

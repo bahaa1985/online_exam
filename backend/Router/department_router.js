@@ -7,9 +7,7 @@ const department_router=express.Router();
 
 export default department_router.get('/',(req,res)=>{
     getDepartments().then(result=>{
-        console.log('gh',result)
         if(result){
-            console.log('gh',result)
             res.status(201).json(result);
         }
         else{

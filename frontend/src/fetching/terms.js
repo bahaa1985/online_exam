@@ -1,5 +1,4 @@
-export function getTerms(){
-    fetch('/terms').then(result=>{
-        return result.json();
-    })
+export async  function getTerms(){
+    const response = await fetch('/terms',{method:'GET'});
+    return response.json();
 }

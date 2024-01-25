@@ -5,6 +5,5 @@ export async function getDepartments(){
     const request= await pool.request();
     const result= await request.query("SELECT * FROM Department");
     const departments=result.recordset;
-    console.log('deps',departments);
     return departments;
 }

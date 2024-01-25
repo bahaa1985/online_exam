@@ -4,7 +4,7 @@ import { getTerms } from '../Controller/terms_controller.js';
 const term_router=express.Router();
 
 export default term_router.get('/',(req,res)=>{
-    getTerms.then(result=>{
+    getTerms().then(result=>{
     if(result){
     res.status(201).json(result);
     }

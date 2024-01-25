@@ -15,16 +15,78 @@ export async function getDoctors(){
     return doctors;
 }
 
-export async function newUser(user_name, user_email,user_password,user_type,user_department){
+export async function newUser(user_name, user_email,user_password,user_type,user_department,course_id,academic_year){
     const pool=await poolPromise;
-    const request= await pool.request();
-    request.input('user_name',Sql.NVarChar,user_name);
-    request.input('user_email',Sql.NVarChar,user_email);
-    request.input('user_password',Sql.NVarChar,user_password);
-    request.input('user_type',Sql.Int,user_type);
-    request.input('user_department',Sql.Int,user_department);  
-    const new_user= await request.execute("CREATE_NEW_USER");
-    return new_user;
+    const transaction= new Sql.Transaction(pool);
+    const request= new Sql.Request(transaction);
+    let new_doctor_id=0;
+    await transaction.begin()
+    try{
+        request.input('user_name',Sql.NVarChar,user_name);
+        request.input('user_email',Sql.NVarChar,user_email);
+        request.input('user_password',Sql.NVarChar,user_password);
+        request.input('user_type',Sql.Int,user_type);
+        request.input('user_department',Sql.Int,user_department);  
+        const user= await request.execute("CREATE_NEW_USER")
+    
+        // console.log("new user:",user);
+        
+        if(user.rowsAffected.length>0 && user_type==2){
+            new_doctor_id=user.recordset[0].new_user_id;
+            if(new_doctor_id>0){
+                const request2=new Sql.Request(transaction);
+                request2.input('doctor_id',Sql.Int,new_doctor_id);
+                request2.input('course_id',Sql.Int,course_id);
+                request2.input('academic_year',Sql.NVarChar,academic_year); 
+                await request2.execute('CREATE_NEW_CourseDoctor')  ;
+                await transaction.commit()
+
+                return user; 
+            }
+        } 
+    }
+    catch(error){
+        transaction.rollback();
+        console.log("trans error",error)
+        return error.message;
+    }
+   finally{
+        pool.close();
+   }
+    // .then(async ()=>{
+    //     request.input('user_name',Sql.NVarChar,user_name);
+    //     request.input('user_email',Sql.NVarChar,user_email);
+    //     request.input('user_password',Sql.NVarChar,user_password);
+    //     request.input('user_type',Sql.Int,user_type);
+    //     request.input('user_department',Sql.Int,user_department);  
+    //     request.execute("CREATE_NEW_USER")
+    //     .then(user=>{
+    //         console.log("new user:",user);
+    //         if(user.rowsAffected.length>0 && user_type==2){
+    //             new_doctor_id=user.recordset[0].new_user_id;
+    //             if(new_doctor_id>0){
+    //                 // const request2=new Sql.Request(transaction);
+    //                 request.input('doctor_id',Sql.Int,new_doctor_id);
+    //                 request.input('course_id',Sql.Int,course_id);
+    //                 request.input('academic_year',Sql.NVarChar,academic_year); 
+    //                 request.execute('CREATE_NEW_CourseDoctor')  ;
+    //                 transaction.commit()
+    //                 .then(new_doctor=>{
+    //                     return new_doctor; 
+    //                 })
+    //             }
+    //         } 
+    //     })
+    //     .catch(err=>{
+    //         transaction.rollBack();
+    //         return err;
+    //     })
+    // })
+
+    // .catch(err=>{
+    //     return err;
+    // })
+   
 }
 
 export async function updateUser(user_id,user_name, user_email,user_password,user_type,user_department){

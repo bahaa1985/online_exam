@@ -11,7 +11,6 @@ export  function Course(){
            setCourses(result);
         });
     },[]);
-    console.log('courses: ',courses)
     
     return(
         <div>
