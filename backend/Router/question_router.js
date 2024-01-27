@@ -23,21 +23,20 @@ question_router
         res.status(500).json(err);
      })
 })
-.post('/NewQuestion',urlEncoded,(req,res)=>{
+.post('/',urlEncoded,async (req,res)=>{
     const questiontype_id=req.body.questiontype_id;
     const question_title=req.body.question_title;
-    const doctor_id=req.body.doctor_id;
-    const course_id=req.body.course_id;
-    const question_option=req.body.question_option;
-    const option_status=req.body.option_status;
+    const course_doctor_id=req.body.course_doctor_id;
+    const creation_date=req.body.creation_date;
+    const options_arr=req.body.options_arr;
 
-    createQuestion(questiontype_id,question_title,course_id,doctor_id,question_option,option_status)
+    await createQuestion(questiontype_id,question_title,course_doctor_id,creation_date,options_arr)
     .then(result=>{
             if(result){
-                res.status(201).json(result);
+                res.status(201).json({"Question":result});
             }
             else{
-                res.status(400).send('Error 400: bad request!');
+                res.status(400).send({'message':'Error 400: bad request!'});
             }
     })
     .catch(err=>{

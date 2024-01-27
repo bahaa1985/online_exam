@@ -131,12 +131,13 @@ export function Register() {
   }
 
   return (
-    <div dir="rtl" className="container col-md-8">
-      <form className="from" action="/register" method="POST" onSubmit={handleSubmit}>
+    <div className="container row  pt-3" dir="rtl">
+      <form className="form" action="/register" method="POST" onSubmit={handleSubmit}>
 
-        <div className="row d-flex pt-3 container">
-          <label htmlFor="typesControl" className='form-label col'> اختر نوع المستخدم </label>
-          <select id="typesControl" className='form-control col' defaultValue={typeId} onChange={(e) => setTypeId(parseInt(e.target.value))}>
+        {/* SELECT CONTROL FOR USER TYPE */}
+        <div className="container col-sm-8 d-flex jusyify-content-center pt-3">
+          <label htmlFor="typesControl" className='form-label' style={{width:'35%'}}> اختر نوع المستخدم </label>
+          <select id="typesControl" className='form-control' style={{width:'55%'}} defaultValue={typeId} onChange={(e) => setTypeId(parseInt(e.target.value))}>
             {
               userTypes.map((type, index) => {
                 return (
@@ -147,9 +148,10 @@ export function Register() {
           </select>
         </div>
 
-        <div className="row d-flex pt-3 container">
-          <label htmlFor="departmentControl" className='form-label col'>اختر القسم</label>
-          <select id="departmentControl" className='form-control col' value={departmentId} onChange={(e) => setDepartmentId(parseInt(e.target.value))}>
+        {/** SELECT CONTROL FOR DEPARTMENTS */}
+        <div className="container col-sm-8 d-flex pt-3">
+          <label htmlFor="departmentControl" className='form-label' style={{width:'25%'}}>اختر القسم</label>
+          <select id="departmentControl" className='form-control' style={{width:'55%'}} value={departmentId} onChange={(e) => setDepartmentId(parseInt(e.target.value))}>
             {
 
               typeId === 1 ?
@@ -169,10 +171,11 @@ export function Register() {
 
         {
          typeId > 1 ?
-            <div>
-              <div className="row d-flex pt-3 container">
-                <label htmlFor="coursesControl" className='form-label col'> اختر المادة </label>
-                <select id="coursesControl" className='form-control col' value={courseId} onChange={(e) => setCourseId(e.target.value)}>
+            <>
+              {/* SELECT CONTROL FOR COURSES*/}
+              <div className="container col-sm-8 d-flex pt-3">
+                <label htmlFor="coursesControl" className='form-label' style={{width:'25%'}}> اختر المادة </label>
+                <select id="coursesControl" className='form-control' style={{width:'55%'}} value={courseId} onChange={(e) => setCourseId(e.target.value)}>
                   {
                     courses.length>0 ?
                     courses.map((course, index) => {
@@ -183,32 +186,40 @@ export function Register() {
                   }
                 </select>
               </div>
-            </div>
+            </>
             : null}
 
-
-        <div className="row d-flex pt-3 container">
-          <label htmlFor="nameControl" className='form-label col'>اسم المستخدم</label>
-          <input id="nameControl" type="text" className='form-control col' value={name} onChange={(e) => { setName(e.target.value); validName(e.target.value) }}></input>
+        {/** INPUT CONTROL FOR USER'S NAME*/}
+        <div className="container col-sm-8 d-flex pt-3">
+          <label htmlFor="nameControl" className='form-label' style={{width:'25%'}}>اسم المستخدم</label>
+          <input id="nameControl" type="text" className='form-control' style={{width:'55%'}} value={name} onChange={(e) => { setName(e.target.value); validName(e.target.value) }}></input>
           {nameError !== "" ? <span>{nameError}</span> : null}
         </div>
-        <div className="row d-flex pt-3 container">
-          <label htmlFor="emailControl" className='form-label col'>البريد الالكتروني</label>
-          <input id="emailControl" type="email" className='form-control col' value={email} onChange={(e) => { setEmail(e.target.value); validEmail(e.target.value) }}></input>
+
+        {/** INPUT CONTROL FOR EMAIL */}
+        <div className="container col-sm-8 d-flex pt-3">
+          <label htmlFor="emailControl" className='form-label' style={{width:'25%'}}>البريد الالكتروني</label>
+          <input id="emailControl" type="email" className='form-control' style={{width:'55%'}} value={email} onChange={(e) => { setEmail(e.target.value); validEmail(e.target.value) }}></input>
           {emailError !== "" ? <span>{emailError}</span> : null}
         </div>
-        <div className="row d-flex pt-3 container">
-          <label htmlFor="passwordControl" className='form-label col'>كلمة المرور</label>
-          <input id="passwordControl" type="password" className='form-control col' value={password} onChange={(e) => { setPassword(e.target.value); validPassword(e.target.value) }}></input>
+
+        {/** INPUT CONTROL FOR PASSWORD */}
+        <div className="container col-sm-8 d-flex pt-3">
+          <label htmlFor="passwordControl" className='form-label' style={{width:'25%'}}>كلمة المرور</label>
+          <input id="passwordControl" type="password" className='form-control' style={{width:'55%'}} value={password} onChange={(e) => { setPassword(e.target.value); validPassword(e.target.value) }}></input>
           {passwordError !== "" ? <span>{passwordError}</span> : null}
         </div>
-        <div className="row d-flex pt-3 container">
-          <label htmlFor="confirmControl" className='form-label col'>تأكيد كلمة المرور</label>
-          <input id="confirmControl" type="password" className='form-control col' value={confirmPassword} onChange={(e) => { setConfirmPassword(e.target.value); validConfirmPassword(e.target.value) }}></input>
+
+        {/** INPUT CONTROL FOR PASSWORD */}
+        <div className="container col-sm-8 d-flex pt-3">
+          <label htmlFor="confirmControl" className='form-label' style={{width:'25%'}}>تأكيد كلمة المرور</label>
+          <input id="confirmControl" type="password" className='form-control' style={{width:'55%'}} value={confirmPassword} onChange={(e) => { setConfirmPassword(e.target.value); validConfirmPassword(e.target.value) }}></input>
           {confirmPasswordError !== "" ? <span>{confirmPasswordError}</span> : null}
         </div>
-        <div className="row d-flex pt-3">
-          <button type="submit" className="btn btn-primary col-4 container">تسجيل</button>
+
+        {/** SUBMIT CONTROL*/}
+        <div className="container col-sm-2 d-flex justify-content-around pt-3">
+          <button type="submit" className="btn btn-primary container">تسجيل</button>
         </div>
       </form>
     </div>

@@ -14,7 +14,6 @@ function ExamScheduling(props) {
 
     const admin=props.admin;
     const admin_id=admin.user_id;
-    console.log("admin:",admin);
 
     const [exams,setExams]=useState([]);
     const [terms,setTerms]=useState([]);
@@ -108,11 +107,12 @@ function ExamScheduling(props) {
   };
 
   return (
-    <div dir='rtl' className="container col-sm-8 text-center">
-      <form className='form' onSubmit={handleSubmit} action='/exams' method='POST'>
-        <div className='container d-flex pt-3 col-sm-8'>    {/*select the term*/}
-          <label className='form-label col-sm-3'>اختر الترم</label>
-          <select className='form-control col-sm-9' value={termId} onChange={(e)=>setTermId(parseInt(e.target.value))}>
+    <div dir='rtl' className="container col-sm-8">
+      <form className='form container' style={{margin:'0 auto'}} onSubmit={handleSubmit} action='/exams' method='POST'>
+
+        <div className="container col-sm-8 d-flex justify-content-around pt-3 px-auto">    {/*select the term*/}
+          <label className='form-label' style={{width:'25%'}}>اختر الترم</label>
+          <select className='form-control' style={{width:'65%'}} value={termId} onChange={(e)=>setTermId(parseInt(e.target.value))}>
             {
               terms.map((term,index)=>{
                 return(
@@ -123,9 +123,9 @@ function ExamScheduling(props) {
           </select>
         </div>
        
-        <div className='container d-flex pt-3 col-sm-8'>    {/*select the term*/}
-          <label className='form-label col-sm-3'>اختر القسم</label>
-          <select className='form-control col-sm-9' value={departmentId} onChange={(e)=>setDepartmentId(parseInt(e.target.value))}>
+        <div className="container col-sm-8 d-flex justify-content-around pt-3 px-auto">    {/*select the term*/}
+          <label className='form-label' style={{width:'25%'}}>اختر القسم</label>
+          <select className='form-control' style={{width:'65%'}} value={departmentId} onChange={(e)=>setDepartmentId(parseInt(e.target.value))}>
             {
               departments.map((department,index)=>{
                 return(
@@ -136,9 +136,9 @@ function ExamScheduling(props) {
           </select>
         </div>
 
-        <div className='container d-flex pt-3 col-sm-8'>    {/*select the term*/}
-          <label className='form-label col-sm-3'>اختر المادة</label>
-          <select className='form-control col-sm-9' value={courseDocotrId} onChange={(e)=>setCourseDoctorId(parseInt(e.target.value))}>
+        <div className="container col-sm-8 d-flex justify-content-around pt-3 px-auto">    {/*select the term*/}
+          <label className='form-label' style={{width:'25%'}}>اختر المادة</label>
+          <select className='form-control' style={{width:'65%'}} value={courseDocotrId} onChange={(e)=>setCourseDoctorId(parseInt(e.target.value))}>
             {
               courses.length>0 ?
               courses.map((course,index)=>{
@@ -150,17 +150,17 @@ function ExamScheduling(props) {
           </select>
         </div>
           
-        <div className='container d-flex pt-3 col-sm-8'> 
-            <label className='form-label col-sm-2'>تاريخ الامتحان</label>
-            <input className='form-control col-sm-6' type="date" onChange={(e)=>setExamDate(e.target.value)}
+        <div className="container col-sm-8 d-flex justify-content-around pt-3 px-auto"> 
+            <label className='form-label' style={{width:'25%'}}>تاريخ الامتحان</label>
+            <input className='form-control' style={{width:'65%'}} type="date" onChange={(e)=>setExamDate(e.target.value)}
              min={new Date().toISOString().split('T')[0]}/>
         </div>
 
-        <div className='container d-flex pt-3 col-sm-8'>
-          <label className='form-label'>من الساعة</label>
-          <input className='form-control' type='time' value={examStart} onChange={(e)=>{setexamStart(e.target.value);validateExamTime(examStart,examEnd)}}/>
-          <label className='form-label'>إلى الساعة</label>
-          <input className='form-control' type='time' value={examEnd}  onChange={(e)=>{setexamEnd(e.target.value);validateExamTime(examStart,examEnd)}}/>
+        <div className="container col-sm-8 d-flex justify-content-around pt-3 px-auto">
+          <label className='form-label' style={{width:'15%'}}>من الساعة</label>
+          <input className='form-control' style={{width:'30%'}} type='time' value={examStart} onChange={(e)=>{setexamStart(e.target.value);validateExamTime(examStart,examEnd)}}/>
+          <label className='form-label' style={{width:'15%'}}>إلى الساعة</label>
+          <input className='form-control' style={{width:'30%'}} type='time' value={examEnd}  onChange={(e)=>{setexamEnd(e.target.value);validateExamTime(examStart,examEnd)}}/>
         </div>  
         {
           timeError ? 
@@ -168,20 +168,19 @@ function ExamScheduling(props) {
           :null
         }
 
-        <div className='container d-flex pt-3 col-sm-8'> 
-            <label className='form-label col-sm-2'>عدد الأسئلة</label>
-            <input className='form-control col-sm-6' type="input" onChange={(e)=>setQuesCount(e.target.value)}/>
+        <div className="container col-sm-8 d-flex justify-content-around pt-3 px-auto"> 
+            <label className='form-label' style={{width:'25%'}}>عدد الأسئلة</label>
+            <input className='form-control' style={{width:'65%'}} type="input" onChange={(e)=>setQuesCount(e.target.value)}/>
         </div>
 
-        <div className='container d-flex pt-3 col-sm-8'> 
-            <label className='form-label col-sm-2'>مجموع الدرجات</label>
-            <input className='form-control col-sm-6' type="input" onChange={(e)=>setPoints(e.target.value)}/>
+        <div className="container col-sm-8 d-flex justify-content-around pt-3 px-auto"> 
+            <label className='form-label' style={{width:'25%'}}>مجموع الدرجات</label>
+            <input className='form-control' style={{width:'65%'}} type="input" onChange={(e)=>setPoints(e.target.value)}/>
         </div>
 
         <div className='container d-flex justify-content-center pt-3 col-sm-8'>
-          <button className='btn btn-primary' type="submit">Schedule Exam</button>
-        </div>  
-
+          <button className='btn btn-primary' type="submit">تسجيل الامتحان</button>
+        </div>         
       </form>
     </div>
   );

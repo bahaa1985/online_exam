@@ -1,9 +1,12 @@
 import poolPromise from "./sql_connect_api.js";
 import Sql from 'mssql';
 
-export async function getDoctorCourses(doctor_id){
+export async function getDoctorCourses(doctor_id,academic_year){
     const pool=await poolPromise;
-    const result=await pool.request().input('doctor_id',doctor_id).execute('GET_DOCTOR_COURSES')
+    const request = await pool.request()
+    request.input('doctor_id',Sql.Int,doctor_id);
+    request.input('academic_year',Sql.NVarChar,academic_year);
+    const result=await request.execute('GET_DOCTOR_COURSES')
     const courses=result.recordset;
     return courses;
 }

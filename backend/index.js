@@ -3,10 +3,9 @@ import bodyParser from "body-parser";
 import "dotenv/config";
 import cookieParser from 'cookie-parser';
 import sql_connect from "./Controller/sql_connect_api.js";
-import admin_router from "./Router/admin_router.js";
-import doctor_router from "./Router/doctor_router.js";
 import course_router from "./Router/course_router.js";
 import question_router from "./Router/question_router.js";
+import question_type_router from "./Router/question_type_router.js";
 import terms_router from "./Router/terms_router.js"
 import department_router from "./Router/department_router.js";
 import register_router from "./Router/registration_router.js";
@@ -46,6 +45,7 @@ app.use('/logout',logout_router)
 app.use('/user_type',user_type_router)
 app.use('/verify',verify_token_router)
 app.use('/exams',exam_router);
+app.use('/question_type',question_type_router);
 //Listening server
 app.listen(8000,()=>{
     console.log("Hello")
