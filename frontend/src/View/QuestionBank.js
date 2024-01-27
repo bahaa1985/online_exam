@@ -15,7 +15,7 @@ function QuestionBank(props) {
   const [questionTypes, setQuestionTypes] = useState([]);
   const [quesTypeId,setQuesTypeId]= useState(1);
   const [questionText, setQuestionText] = useState('');
-  const [options, setOptions] = useState([]);
+  const [options, setOptions] = useState([{"option_text":'',"option_status":0}]);
 
 
   useEffect(()=>{
@@ -79,7 +79,7 @@ function QuestionBank(props) {
       .then(result=>{
         if(result){
           alert('تم حفظ السؤال!');
-          setQuestionText(null);setOptions(createOptionsArr());
+          setQuestionText('');setOptions(createOptionsArr());
         }
         else{
           alert(result.message);
@@ -124,7 +124,7 @@ function QuestionBank(props) {
           {
             options.map((option,index)=>{
               return(
-                <div class="input-group container my-3">
+                <div key={index} class="input-group container my-3">
                   <input name="option-input" className="form-control mx-3" type="text" onChange={(e)=>{option.option_text=e.target.value}} />
                   {
                     quesTypeId ===1 ?

@@ -1,6 +1,7 @@
 import express from 'express'
-import { getExamQuestions, createExamQuestion, deleteExamQuestion } from '../controller/exam_question_controller';
-import { urlencoded } from 'body-parser';
+import { getExamQuestions, createExamQuestion, deleteExamQuestion } from '../Controller/exam_question_controller.js'
+import bodyParser from 'body-parser';
+const urlencoded =bodyParser.urlencoded({extended:false});
 
 const exam_questions_router=express.Router();
 
@@ -17,16 +18,16 @@ exam_questions_router
     })
     .catch(err=> res.status(500).json(err));
 })
-.post('/',urlencoded,(req,res)=>{
+.post('/',urlencoded,async (req,res)=>{
     const exam_id=req.body.exam_id;
     const question_id =req.body.question_id;
 
-    createExamQuestion(exam_id,question_id).then(result=>{
+    await createExamQuestion(exam_id,question_id).then(result=>{
         if(result){
-            res.status(201).json(result);
+            res.status(201).json({"exam":result,"message":"exam questions are assigned!"});
         }
         else{
-            res.status(400).send('Error 400: bad request!');
+            res.status(400).send({"message":'Error 400: bad request!'});
         }
     })
     .catch(err=>res.status(500).json(err));
@@ -43,3 +44,5 @@ exam_questions_router
     })
     .catch(err=> res.status(500).json(err));
 })
+
+export default exam_questions_router;

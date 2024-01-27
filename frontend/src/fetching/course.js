@@ -10,7 +10,7 @@ export async function getDoctorCourse(doctor_id,academic_year){
 }
 
 export async function getDepartmentCourses(department_id){
-    const response= await fetch(`/courses?department_id=${department_id}`,{method:'GET'});
+    const response= await fetch(`/courses/department?department_id=${department_id}`,{method:'GET'});
     return response.json();
 }
 

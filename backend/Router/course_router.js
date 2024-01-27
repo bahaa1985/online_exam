@@ -21,10 +21,10 @@ course_router
       res.status(500).json({"course err message" :err.message});
    })
 })
-.get('/',async (req,res)=>{
+.get('/department',async (req,res)=>{
    const department_id=req.query.department_id;
    getDepartmentCourses(department_id).then(courses=>{
-      if(courses.length>0){
+      if(courses){
       res.status(201).json({"data":courses,"message":'201: OK!'});
       }
       else{

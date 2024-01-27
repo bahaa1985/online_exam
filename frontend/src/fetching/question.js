@@ -21,3 +21,8 @@ export async function createQuestion(questiontype_id,question_title,course_docto
     return response.json()
 
 }
+
+
+export async function getQuestions(){
+    
+}

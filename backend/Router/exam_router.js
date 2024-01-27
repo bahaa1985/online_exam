@@ -1,5 +1,5 @@
 import  express  from "express";
-import { getExams,createExam,updateExam} from "../Controller/exam_head_controller.js";
+import { getExams,createExam,updateExam,getExamsForDoctors} from "../Controller/exam_head_controller.js";
 import bodyParser from "body-parser";
 const urlencoded=bodyParser.urlencoded({extended:false});
 
@@ -21,18 +21,21 @@ exam_router
     })
     .catch(err=> res.status(500).json(err));
 })
-// .get('/:exam_id',(req,res)=>{
-//     const exam_id=req.params.exam_id;
-//     getExam(exam_id).then(result=>{
-//         if(result){
-//             res.status(201).json(result);
-//         }
-//         else{
-//             res.status(400).send('Error 400: bad request!');
-//         }
-//     })
-//     .catch(err=> res.status(500).json(err));
-// })
+.get('/',(req,res)=>{
+    const academic_year=req.query.academic_year;
+    const term_id=req.query.term_id;
+    const course_doctor_id=req.query.course_doctor_id;
+
+    getExamsForDoctors(course_doctor_id,academic_year,term_id).then(result=>{
+        if(result){
+            res.status(201).json({"exam":result});
+        }
+        else{
+            res.status(400).send('Error 400: bad request!');
+        }
+    })
+    .catch(err=> res.status(500).json(err));
+})
 .post('/',urlencoded,(req,res)=>{
     const exam_year=req.body.exam_year;
     const term_id=req.body.term_id;

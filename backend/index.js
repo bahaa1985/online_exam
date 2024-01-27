@@ -14,6 +14,7 @@ import login_router from "./Router/login_router.js";
 import logout_router from "./Router/logout_router.js";
 import verify_token_router from "./Router/verify_token_router.js";
 import exam_router from "./Router/exam_router.js";
+import exam_questions_router from "./Router/exam_questions_router.js";
 
 const urlEncoded=bodyParser.urlencoded({extended:false});
 
@@ -46,6 +47,7 @@ app.use('/user_type',user_type_router)
 app.use('/verify',verify_token_router)
 app.use('/exams',exam_router);
 app.use('/question_type',question_type_router);
+app.use('/exam_questions',exam_questions_router);
 //Listening server
 app.listen(8000,()=>{
     console.log("Hello")

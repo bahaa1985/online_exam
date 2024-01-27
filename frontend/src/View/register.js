@@ -30,23 +30,36 @@ export function Register() {
       setUserTypes(result);
 
     });
-
-  }, [])
+  },[])
 
   useEffect(() => {
     getDepartments().then(result => {
       setDepartments(result);
     });
-  }, []);
+  },[]);
 
   useEffect(() => {
+    if(departmentId>1){
       getDepartmentCourses(departmentId)
       .then(result => {
-        console.log("courses",courses);
+        if(result.data)
+        console.log("courses",result);
         setCourses(result.data);
       });
+    }
   }, [departmentId])
 
+  // function changeUserType(){
+  //   if(typeId===1){
+  //     setDepartmentId(1);
+  //   }
+  //   else{
+  //     setDepartmentId(2);
+  //   }
+  // }
+  // useEffect((){
+  //   changeUserType();
+  // })
   //Check validition of user name:
   function validName(name) {
     if (name.trim() === '') {

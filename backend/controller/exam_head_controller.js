@@ -3,11 +3,15 @@ import poolPromise from './sql_connect_api.js';
 
 const pool = await poolPromise;
 
-// export async function getExams(academic_year,term_id){    
-//     const result= await pool.request.query(`SELECT * FROM Exam WHERE YEAR(exam_date)=${academic_year} AND term_id=${term_id}`);
-//     const exams= result.recordset;
-//     return exams;
-// }
+export async function getExamsForDoctors(course_doctor_id,academic_year,term_id){ 
+    const pool=await poolPromise;
+    const request= await pool.request();
+    request.input('course_doctor_id',Sql.Int,course_doctor_id);
+    request.input('academic_year',Sql.Int,academic_year);
+    request.input('term_id',Sql.Int,term_id);
+    const result= await request.query('SELECT * FROM Exam WHERE YEAR(exam_date)=@academic_year AND term_id=@term_id AND course_doctor_id=@course_doctor_id');
+    return result.recordsets[0][0];   
+}
 
 export async function getExams(department_id, exam_year, term_id) {
     const pool = await poolPromise;

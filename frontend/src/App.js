@@ -11,6 +11,7 @@ import logout from './fetching/logout';
 import verifyToken from './fetching/token';
 import { useEffect, useState } from 'react';
 import QuestionBank from './View/QuestionBank';
+import ExamQuestions from './View/ExamQuestions';
 function App() {
 
   const [logoutClicked, setLogutClicked] = useState(false);
@@ -80,6 +81,9 @@ function App() {
                   <li className='nav-item'>
                     <Link className='nav-link' to="/questions_bank">الأسئلة</Link>
                   </li>
+                  <li className='nav-item'>
+                    <Link className='nav-link' to="/exam_questions">تعيين اسئلة الامتحان</Link>
+                  </li>
                 </>
                 :null
             }
@@ -106,6 +110,8 @@ function App() {
           <Route path="/exam" element={<ExamScheduling admin={authenticatedUser} />} />
 
           <Route path="/questions_bank" element={<QuestionBank doctor={authenticatedUser}/>} />
+
+          <Route path="/exam_questions" element={<ExamQuestions doctor={authenticatedUser}/>} />
 
         </Routes>
     </BrowserRouter>
